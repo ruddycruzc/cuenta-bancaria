@@ -20,4 +20,11 @@ public class Cuenta {
         numeroConsignaciones++;
     }
 
+        public void retirar(float cantidad) {
+        if (cantidad <= saldo) {
+            saldo -= cantidad;
+            numeroRetiros++;
+        }
+    }
+
 }
