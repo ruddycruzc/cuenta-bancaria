@@ -32,4 +32,17 @@ public class Cuenta {
         saldo += interesMensual;
     }
 
+        public void extractoMensual() {
+        saldo -= comisionMensual;
+        calcularInteresMensual();
+    }
+
+    
+    public String imprimir() {
+        return "Saldo: " + saldo
+                + ", Número de consignaciones: " + numeroConsignaciones
+                + ", Número de retiros: " + numeroRetiros
+                + ", Tasa anual: " + tasaAnual
+                + ", Comisión mensual: " + comisionMensual;
+    }
 }
