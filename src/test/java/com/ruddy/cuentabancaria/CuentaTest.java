@@ -16,6 +16,7 @@ class CuentaTest {
     private static final float CANTIDAD_RETIRO = 2500.0f;
     private static final float SALDO_DESPUES_RETIRO = 7500.0f;
     private static final float CANTIDAD_RETIRO_SUPERIOR_SALDO = 15000.0f;
+    private static final float SALDO_DESPUES_INTERES = 10100.0f;
 
     @Test
     void deberiaInicializarLaCuentaCorrectamente() {
@@ -56,6 +57,15 @@ class CuentaTest {
 
         assertEquals(SALDO_INICIAL, cuenta.saldo);
         assertEquals(0, cuenta.numeroRetiros);
+    }
+
+    @Test
+    void deberiaCalcularYAplicarElInteresMensual() {
+        Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
+
+        cuenta.calcularInteresMensual();
+
+        assertEquals(SALDO_DESPUES_INTERES, cuenta.saldo);
     }
 
 }
