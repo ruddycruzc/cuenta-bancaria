@@ -11,6 +11,8 @@ class CuentaTest {
 
     private static final float SALDO_INICIAL = 10000.0f;
     private static final float TASA_ANUAL = 12.0f;
+    private static final float CANTIDAD_CONSIGNADA = 2500.0f;
+    private static final float SALDO_DESPUES_CONSIGNACION = 12500.0f;
 
     @Test
     void deberiaInicializarLaCuentaCorrectamente() {
@@ -21,5 +23,15 @@ class CuentaTest {
         assertEquals(0, cuenta.numeroConsignaciones);
         assertEquals(0, cuenta.numeroRetiros);
         assertEquals(0.0f, cuenta.comisionMensual);
+    }
+
+    @Test
+    void deberiaActualizarSaldoAlConsignar() {
+        Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
+
+        cuenta.consignar(CANTIDAD_CONSIGNADA);
+
+        assertEquals(SALDO_DESPUES_CONSIGNACION, cuenta.saldo);
+        assertEquals(1, cuenta.numeroConsignaciones);
     }
 }
