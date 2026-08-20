@@ -62,4 +62,23 @@ class CuentaAhorrosTest {
         assertEquals(SALDO_DESPUES_RETIRO, cuenta.saldo);
         assertEquals(1, cuenta.numeroRetiros);
     }
+
+    @Test
+    void noDeberiaRetirarSiLaCuentaEstaInactiva() {
+        CuentaAhorros cuenta = new CuentaAhorros(SALDO_INFERIOR, TASA_ANUAL);
+
+        cuenta.retirar(CANTIDAD_RETIRO);
+
+        assertEquals(SALDO_INFERIOR, cuenta.saldo);
+        assertEquals(0, cuenta.numeroRetiros);
+    }
+
+    @Test
+    void deberiaDesactivarseCuandoElSaldoBajaDelMinimo() {
+        CuentaAhorros cuenta = new CuentaAhorros(SALDO_MINIMO, TASA_ANUAL);
+
+        cuenta.retirar(CANTIDAD_RETIRO);
+
+        assertFalse(cuenta.activa);
+    }
 }

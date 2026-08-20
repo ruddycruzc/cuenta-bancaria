@@ -46,6 +46,7 @@ public class CuentaAhorros extends Cuenta {
         if (activa && cantidad <= saldo) {
             saldo -= cantidad;
             numeroRetiros++;
+            activa = saldo >= SALDO_MINIMO;
         }
     }
 
