@@ -13,6 +13,9 @@ class CuentaTest {
     private static final float TASA_ANUAL = 12.0f;
     private static final float CANTIDAD_CONSIGNADA = 2500.0f;
     private static final float SALDO_DESPUES_CONSIGNACION = 12500.0f;
+    private static final float CANTIDAD_RETIRO = 2500.0f;
+    private static final float SALDO_DESPUES_RETIRO = 7500.0f;
+    private static final float CANTIDAD_RETIRO_SUPERIOR_SALDO = 15000.0f;
 
     @Test
     void deberiaInicializarLaCuentaCorrectamente() {
@@ -34,4 +37,25 @@ class CuentaTest {
         assertEquals(SALDO_DESPUES_CONSIGNACION, cuenta.saldo);
         assertEquals(1, cuenta.numeroConsignaciones);
     }
+
+    @Test
+    void deberiaActualizarSaldoAlRetirar() {
+        Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
+
+        cuenta.retirar(CANTIDAD_RETIRO);
+
+        assertEquals(SALDO_DESPUES_RETIRO, cuenta.saldo);
+        assertEquals(1, cuenta.numeroRetiros);
+    }
+
+    @Test
+    void noDeberiaRetirarSiLaCantidadSuperaElSaldo() {
+        Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
+
+        cuenta.retirar(CANTIDAD_RETIRO_SUPERIOR_SALDO);
+
+        assertEquals(SALDO_INICIAL, cuenta.saldo);
+        assertEquals(0, cuenta.numeroRetiros);
+    }
+
 }
