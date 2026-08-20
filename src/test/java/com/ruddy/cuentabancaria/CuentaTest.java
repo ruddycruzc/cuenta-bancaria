@@ -80,4 +80,19 @@ class CuentaTest {
         assertEquals(SALDO_DESPUES_EXTRACTO, cuenta.saldo);
     }
 
+    @Test
+    void deberiaMostrarLosDatosDeLaCuenta() {
+        Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
+
+        String resultado = cuenta.imprimir();
+
+        assertEquals(
+                "Saldo: 10000.0"
+                        + ", Número de consignaciones: 0"
+                        + ", Número de retiros: 0"
+                        + ", Tasa anual: 12.0"
+                        + ", Comisión mensual: 0.0",
+                resultado);
+    }
+
 }
