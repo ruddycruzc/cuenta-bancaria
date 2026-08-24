@@ -11,7 +11,7 @@ public class CuentaCorriente extends Cuenta {
     /**
      * Creates a current account.
      *
-     * @param saldo initial balance
+     * @param saldo     initial balance
      * @param tasaAnual annual interest rate
      */
     public CuentaCorriente(float saldo, float tasaAnual) {
@@ -67,6 +67,14 @@ public class CuentaCorriente extends Cuenta {
     }
 
     /**
+     * Generates the monthly statement.
+     */
+    @Override
+    public void extractoMensual() {
+        super.extractoMensual();
+    }
+
+    /**
      * Returns the account information.
      *
      * @return account information
@@ -79,4 +87,5 @@ public class CuentaCorriente extends Cuenta {
                 + (numeroConsignaciones + numeroRetiros)
                 + ", Sobregiro: " + sobregiro;
     }
+
 }

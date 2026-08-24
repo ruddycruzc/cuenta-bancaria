@@ -20,6 +20,19 @@ class CuentaCorrienteTest {
     private static final float CANTIDAD_CONSIGNADA_MAYOR = 3000.0f;
     private static final float SALDO_DESPUES_CONSIGNACION_MAYOR = 1000.0f;
 
+    private static final float COMISION_MENSUAL = 100.0f;
+    private static final float SALDO_DESPUES_EXTRACTO = 9999.0f;
+
+    private static final float SALDO_IMPRIMIR = 10000.0f;
+    private static final float CANTIDAD_CONSIGNADA_IMPRIMIR = 1000.0f;
+    private static final float CANTIDAD_RETIRO_IMPRIMIR = 1000.0f;
+    private static final float COMISION_IMPRIMIR = 500.0f;
+
+    private static final String DATOS_CUENTA = "Saldo: 10000.0"
+            + ", Comisión mensual: 500.0"
+            + ", Número de transacciones: 2"
+            + ", Sobregiro: 0.0";
+
     @Test
     void deberiaInicializarElSobregiroEnCero() {
         CuentaCorriente cuenta = new CuentaCorriente(
@@ -68,5 +81,31 @@ class CuentaCorrienteTest {
         assertEquals(SALDO_DESPUES_CONSIGNACION_MAYOR, cuenta.saldo);
         assertEquals(0.0f, cuenta.sobregiro);
         assertEquals(1, cuenta.numeroConsignaciones);
+    }
+
+    @Test
+    void deberiaAplicarElExtractoMensual() {
+        CuentaCorriente cuenta = new CuentaCorriente(
+                SALDO_INICIAL,
+                TASA_ANUAL);
+
+        cuenta.comisionMensual = COMISION_MENSUAL;
+        cuenta.extractoMensual();
+
+        assertEquals(SALDO_DESPUES_EXTRACTO, cuenta.saldo);
+    }
+
+    @Test
+    void deberiaImprimirLosDatosDeLaCuenta() {
+        CuentaCorriente cuenta = new CuentaCorriente(
+                SALDO_IMPRIMIR,
+                TASA_ANUAL);
+
+        cuenta.comisionMensual = COMISION_IMPRIMIR;
+
+        cuenta.consignar(CANTIDAD_CONSIGNADA_IMPRIMIR);
+        cuenta.retirar(CANTIDAD_RETIRO_IMPRIMIR);
+
+        assertEquals(DATOS_CUENTA, cuenta.imprimir());
     }
 }
