@@ -21,26 +21,26 @@ class CuentaAhorrosTest {
     private static final float CANTIDAD_RETIRO = 2500.0f;
     private static final float SALDO_DESPUES_RETIRO = 7500.0f;
 
+    private static final float CANTIDAD_RETIRO_COMISION = 1000.0f;
+    private static final float COMISION_ESPERADA = 1000.0f;
+
     @Test
     void deberiaEstarActivaConSaldoMinimo() {
-        CuentaAhorros cuenta =
-                new CuentaAhorros(SALDO_MINIMO, TASA_ANUAL);
+        CuentaAhorros cuenta = new CuentaAhorros(SALDO_MINIMO, TASA_ANUAL);
 
         assertTrue(cuenta.activa);
     }
 
     @Test
     void deberiaEstarInactivaConSaldoInferiorAlMinimo() {
-        CuentaAhorros cuenta =
-                new CuentaAhorros(SALDO_INFERIOR, TASA_ANUAL);
+        CuentaAhorros cuenta = new CuentaAhorros(SALDO_INFERIOR, TASA_ANUAL);
 
         assertFalse(cuenta.activa);
     }
 
     @Test
     void deberiaConsignarSiLaCuentaEstaActiva() {
-        CuentaAhorros cuenta =
-                new CuentaAhorros(SALDO_MINIMO, TASA_ANUAL);
+        CuentaAhorros cuenta = new CuentaAhorros(SALDO_MINIMO, TASA_ANUAL);
 
         cuenta.consignar(CANTIDAD_CONSIGNADA);
 
@@ -50,8 +50,7 @@ class CuentaAhorrosTest {
 
     @Test
     void noDeberiaConsignarSiLaCuentaEstaInactiva() {
-        CuentaAhorros cuenta =
-                new CuentaAhorros(SALDO_INFERIOR, TASA_ANUAL);
+        CuentaAhorros cuenta = new CuentaAhorros(SALDO_INFERIOR, TASA_ANUAL);
 
         cuenta.consignar(CANTIDAD_CONSIGNADA);
 
@@ -61,8 +60,7 @@ class CuentaAhorrosTest {
 
     @Test
     void deberiaRetirarSiLaCuentaEstaActiva() {
-        CuentaAhorros cuenta =
-                new CuentaAhorros(SALDO_MINIMO, TASA_ANUAL);
+        CuentaAhorros cuenta = new CuentaAhorros(SALDO_MINIMO, TASA_ANUAL);
 
         cuenta.retirar(CANTIDAD_RETIRO);
 
@@ -72,8 +70,7 @@ class CuentaAhorrosTest {
 
     @Test
     void noDeberiaRetirarSiLaCuentaEstaInactiva() {
-        CuentaAhorros cuenta =
-                new CuentaAhorros(SALDO_INFERIOR, TASA_ANUAL);
+        CuentaAhorros cuenta = new CuentaAhorros(SALDO_INFERIOR, TASA_ANUAL);
 
         cuenta.retirar(CANTIDAD_RETIRO);
 
@@ -83,12 +80,26 @@ class CuentaAhorrosTest {
 
     @Test
     void deberiaDesactivarseCuandoElSaldoBajaDelMinimo() {
-        CuentaAhorros cuenta =
-                new CuentaAhorros(SALDO_MINIMO, TASA_ANUAL);
+        CuentaAhorros cuenta = new CuentaAhorros(SALDO_MINIMO, TASA_ANUAL);
 
         cuenta.retirar(CANTIDAD_RETIRO);
         cuenta.extractoMensual();
 
         assertFalse(cuenta.activa);
+    }
+
+    @Test
+    void deberiaCobrarComisionPorRetirosAdicionales() {
+        CuentaAhorros cuenta = new CuentaAhorros(SALDO_MINIMO, TASA_ANUAL);
+
+        cuenta.retirar(CANTIDAD_RETIRO_COMISION);
+        cuenta.retirar(CANTIDAD_RETIRO_COMISION);
+        cuenta.retirar(CANTIDAD_RETIRO_COMISION);
+        cuenta.retirar(CANTIDAD_RETIRO_COMISION);
+        cuenta.retirar(CANTIDAD_RETIRO_COMISION);
+
+        cuenta.extractoMensual();
+
+        assertEquals(COMISION_ESPERADA, cuenta.comisionMensual);
     }
 }
