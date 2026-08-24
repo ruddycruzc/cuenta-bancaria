@@ -5,7 +5,7 @@ package com.ruddy.cuentabancaria;
  */
 public class CuentaCorriente extends Cuenta {
 
-    /** Overdraft amount of the account. */
+    /** Account overdraft amount. */
     protected float sobregiro;
 
     /**
@@ -16,54 +16,54 @@ public class CuentaCorriente extends Cuenta {
      */
     public CuentaCorriente(float saldo, float tasaAnual) {
         super(saldo, tasaAnual);
-        this.sobregiro = 0;
+        sobregiro = 0;
     }
 
     /**
      * Withdraws money from the account.
-     * If there is not enough balance, the difference becomes overdraft.
+     * If there is not enough balance, the difference becomes an overdraft.
      *
      * @param cantidad amount to withdraw
      */
     @Override
     public void retirar(float cantidad) {
         if (cantidad <= saldo) {
-            saldo -= cantidad;
+            super.retirar(cantidad);
         } else {
             sobregiro += cantidad - saldo;
             saldo = 0;
+            numeroRetiros++;
         }
-
-        numeroRetiros++;
     }
 
     /**
      * Deposits money into the account.
-     * The inherited method is used first.
+     * The deposit first pays the existing overdraft.
      *
      * @param cantidad amount to deposit
      */
     @Override
     public void consignar(float cantidad) {
-        super.consignar(cantidad);
-
         if (sobregiro > 0) {
             if (cantidad <= sobregiro) {
                 sobregiro -= cantidad;
-                saldo -= cantidad;
             } else {
-                saldo -= sobregiro;
+                saldo += cantidad - sobregiro;
                 sobregiro = 0;
             }
+            numeroConsignaciones++;
+        } else {
+            super.consignar(cantidad);
         }
     }
 
     /**
-     * Calculates the monthly statement.
+     * Returns the current overdraft.
+     *
+     * @return overdraft amount
      */
-    @Override
-    public void extractoMensual() {
-        super.extractoMensual();
+    public float getSobregiro() {
+        return sobregiro;
     }
 
     /**
@@ -75,7 +75,7 @@ public class CuentaCorriente extends Cuenta {
     public String imprimir() {
         return "Saldo: " + saldo
                 + ", Comisión mensual: " + comisionMensual
-                + ", Total de transacciones: "
+                + ", Número de transacciones: "
                 + (numeroConsignaciones + numeroRetiros)
                 + ", Sobregiro: " + sobregiro;
     }
