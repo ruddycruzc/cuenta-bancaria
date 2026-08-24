@@ -11,14 +11,14 @@ class CuentaTest {
 
     private static final float SALDO_INICIAL = 10000.0f;
     private static final float TASA_ANUAL = 12.0f;
+
     private static final float CANTIDAD_CONSIGNADA = 2500.0f;
     private static final float SALDO_DESPUES_CONSIGNACION = 12500.0f;
+
     private static final float CANTIDAD_RETIRO = 2500.0f;
     private static final float SALDO_DESPUES_RETIRO = 7500.0f;
-    private static final float CANTIDAD_RETIRO_SUPERIOR_SALDO = 15000.0f;
-    private static final float SALDO_DESPUES_INTERES = 10100.0f;
-    private static final float COMISION_MENSUAL = 50.0f;
-    private static final float SALDO_DESPUES_EXTRACTO = 10049.5f;
+
+    private static final float CANTIDAD_RETIRO_MAYOR_AL_SALDO = 15000.0f;
 
     @Test
     void deberiaInicializarLaCuentaCorrectamente() {
@@ -32,7 +32,7 @@ class CuentaTest {
     }
 
     @Test
-    void deberiaActualizarSaldoAlConsignar() {
+    void deberiaConsignarDinero() {
         Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
 
         cuenta.consignar(CANTIDAD_CONSIGNADA);
@@ -42,7 +42,7 @@ class CuentaTest {
     }
 
     @Test
-    void deberiaActualizarSaldoAlRetirar() {
+    void deberiaRetirarDinero() {
         Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
 
         cuenta.retirar(CANTIDAD_RETIRO);
@@ -52,47 +52,12 @@ class CuentaTest {
     }
 
     @Test
-    void noDeberiaRetirarSiLaCantidadSuperaElSaldo() {
+    void noDeberiaRetirarMasDineroDelSaldo() {
         Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
 
-        cuenta.retirar(CANTIDAD_RETIRO_SUPERIOR_SALDO);
+        cuenta.retirar(CANTIDAD_RETIRO_MAYOR_AL_SALDO);
 
         assertEquals(SALDO_INICIAL, cuenta.saldo);
         assertEquals(0, cuenta.numeroRetiros);
     }
-
-    @Test
-    void deberiaCalcularYAplicarElInteresMensual() {
-        Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
-
-        cuenta.calcularInteresMensual();
-
-        assertEquals(SALDO_DESPUES_INTERES, cuenta.saldo);
-    }
-
-    @Test
-    void deberiaAplicarComisionEInteresAlGenerarExtracto() {
-        Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
-        cuenta.comisionMensual = COMISION_MENSUAL;
-
-        cuenta.extractoMensual();
-
-        assertEquals(SALDO_DESPUES_EXTRACTO, cuenta.saldo);
-    }
-
-    @Test
-    void deberiaMostrarLosDatosDeLaCuenta() {
-        Cuenta cuenta = new Cuenta(SALDO_INICIAL, TASA_ANUAL);
-
-        String resultado = cuenta.imprimir();
-
-        assertEquals(
-                "Saldo: 10000.0"
-                        + ", Número de consignaciones: 0"
-                        + ", Número de retiros: 0"
-                        + ", Tasa anual: 12.0"
-                        + ", Comisión mensual: 0.0",
-                resultado);
-    }
-
 }

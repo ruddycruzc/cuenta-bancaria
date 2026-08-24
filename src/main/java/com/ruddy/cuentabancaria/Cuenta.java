@@ -17,7 +17,7 @@ public class Cuenta {
     /** Number of withdrawals made. */
     protected int numeroRetiros;
 
-    /** Annual interest rate as a percentage. */
+    /** Annual interest rate. */
     protected float tasaAnual;
 
     /** Monthly commission. */
@@ -60,16 +60,17 @@ public class Cuenta {
     }
 
     /**
-     * Calculates and applies the monthly interest.
+     * Calculates the monthly interest and updates the balance.
      */
     public void calcularInteresMensual() {
         float interesMensual = saldo * tasaAnual
                 / MESES_POR_ANIO / PORCENTAJE_BASE;
+
         saldo += interesMensual;
     }
 
     /**
-     * Applies the monthly commission and calculates monthly interest.
+     * Applies the monthly commission and calculates the monthly interest.
      */
     public void extractoMensual() {
         saldo -= comisionMensual;

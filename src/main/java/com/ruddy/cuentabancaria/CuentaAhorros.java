@@ -1,11 +1,13 @@
 package com.ruddy.cuentabancaria;
 
 /**
- * Represents a savings bank account.
+ * Represents a savings account.
  */
 public class CuentaAhorros extends Cuenta {
 
     private static final float SALDO_MINIMO = 10000.0f;
+    private static final int RETIROS_INCLUIDOS = 4;
+    private static final float COMISION_RETIRO = 1000.0f;
 
     /** Indicates whether the account is active. */
     protected boolean activa;
@@ -18,7 +20,7 @@ public class CuentaAhorros extends Cuenta {
      */
     public CuentaAhorros(float saldo, float tasaAnual) {
         super(saldo, tasaAnual);
-        this.activa = saldo >= SALDO_MINIMO;
+        activa = saldo >= SALDO_MINIMO;
     }
 
     /**
@@ -28,26 +30,36 @@ public class CuentaAhorros extends Cuenta {
      */
     @Override
     public void consignar(float cantidad) {
-        if (!activa) {
-            return;
+        if (activa) {
+            super.consignar(cantidad);
         }
-
-        saldo += cantidad;
-        numeroConsignaciones++;
     }
 
     /**
-     * Withdraws money if the account is active and has enough balance.
+     * Withdraws money if the account is active.
      *
      * @param cantidad amount to withdraw
      */
     @Override
     public void retirar(float cantidad) {
-        if (activa && cantidad <= saldo) {
-            saldo -= cantidad;
-            numeroRetiros++;
-            activa = saldo >= SALDO_MINIMO;
+        if (activa) {
+            super.retirar(cantidad);
         }
+    }
+
+    /**
+     * Calculates the monthly statement.
+     */
+    @Override
+    public void extractoMensual() {
+        if (numeroRetiros > RETIROS_INCLUIDOS) {
+            int retirosAdicionales = numeroRetiros - RETIROS_INCLUIDOS;
+            comisionMensual = retirosAdicionales * COMISION_RETIRO;
+        }
+
+        super.extractoMensual();
+
+        activa = saldo >= SALDO_MINIMO;
     }
 
     /**
@@ -58,9 +70,8 @@ public class CuentaAhorros extends Cuenta {
     @Override
     public String imprimir() {
         return "Saldo: " + saldo
-                + ", Consignaciones: " + numeroConsignaciones
-                + ", Retiros: " + numeroRetiros
-                + ", Tasa anual: " + tasaAnual
-                + ", Comisión mensual: " + comisionMensual;
+                + ", Comisión mensual: " + comisionMensual
+                + ", Número de transacciones: "
+                + (numeroConsignaciones + numeroRetiros);
     }
 }
