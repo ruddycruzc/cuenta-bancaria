@@ -76,31 +76,36 @@ Los principales objetivos del proyecto son:
 
 ## Estructura del proyecto
 
-```text
-cuenta-bancaria/
-├── checkstyle/
-│   └── checkstyle.xml
-├── src/
-│   ├── main/
-│   │   └── java/
-│   │       └── com/
-│   │           └── ruddy/
-│   │               └── cuentabancaria/
-│   │                   ├── Cuenta.java
-│   │                   ├── CuentaAhorros.java
-│   │                   └── CuentaCorriente.java
-│   └── test/
-│       └── java/
-│           └── com/
-│               └── ruddy/
-│                   └── cuentabancaria/
-│                       ├── CuentaTest.java
-│                       ├── CuentaAhorrosTest.java
-│                       └── CuentaCorrienteTest.java
-├── docs/
-|    └── cuentabancaria.drawio.png
-├── pom.xml
-└── README.md
+```
+cuenta-bancaria
+├─ .editorconfig
+├─ checkstyle
+│  └─ checkstyle.xml
+├─ docs
+│  ├─ coverage
+│  │  └─ test-coverage-cuenta.png
+│  └─ diagram
+│     └─ cuentabancaria.drawio.png
+├─ pom.xml
+├─ README.md
+└─ src
+   ├─ main
+   │  └─ java
+   │     └─ com
+   │        └─ ruddy
+   │           └─ cuentabancaria
+   │              ├─ Cuenta.java
+   │              ├─ CuentaAhorros.java
+   │              └─ CuentaCorriente.java
+   └─ test
+      └─ java
+         └─ com
+            └─ ruddy
+               └─ cuentabancaria
+                  ├─ CuentaAhorrosTest.java
+                  ├─ CuentaCorrienteTest.java
+                  └─ CuentaTest.java
+
 ```
 
 ---
@@ -217,3 +222,15 @@ El comando utilizado fue:
 ```bash
 mvn test
 ```
+
+#### JaCoCo
+
+Se utilizó **JaCoCo** para realizar el análisis de cobertura de las pruebas unitarias.
+
+Durante la ejecución de Maven se genera el informe de cobertura y se comprueban las reglas configuradas en el proyecto.
+
+### Cobertura de tests
+
+El resultado final de la ejecución de las pruebas se puede consultar en la siguiente captura:
+
+![Test Coverage](./docs/coverage/test-coverage-cuenta.png)
